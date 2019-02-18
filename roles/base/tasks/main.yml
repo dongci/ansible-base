@@ -1,0 +1,41 @@
+---
+- name: setup /etc/hosts
+  file: src=hosts dest=/etc/hosts 
+        owner=root group=root mode=0644
+  when: ansible_os_family == "RedHat"
+  tags: base
+ 
+- name: setup /usr/bin/ack
+  file: src=ack dest=/usr/bin/ack
+        owner=root group=root mode=0755
+  when: ansible_os_family == "RedHat"
+  tags: base
+
+- name: setup /etc/selinux
+  file: src=selinux/config dest=/etc/selinux/config
+        owner=root group=root mode=0644
+  when: ansible_os_family == "RedHat"
+  tags: base
+
+- name: Install epel-release
+  yum: name=epel-release state=installed
+  when: ansible_os_family == "RedHat"
+  tags: base
+
+- name: Install [ vim git curl wget iftop htop nmap tree tcpdump ] Soft
+  yum: name={{ item }} state=installed
+  with_items:
+    - vim
+    - git
+    - curl
+    - wget
+    - iftop
+    - htop
+    - nmap
+    - tree
+    - tcpdump
+  when: ansible_os_family == "RedHat"
+  tags: base
+
+
+
